@@ -25,7 +25,7 @@
                 <MFXPasswordField fx:id="signupPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Password" />
                 <MFXPasswordField fx:id="signupRepasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Retype Password" />
                 <MFXButton fx:id="signupButton" alignment="CENTER" onAction="#handleSignupButton" text="Signup" />
-                <Label fx:id="signupErrorLabel" textFill="#ea0909" />
+                <Label fx:id="signupStatusLabel" textFill="#ea0909" />
             </children>
         </VBox>
     </children>

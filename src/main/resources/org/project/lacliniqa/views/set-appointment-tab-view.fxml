@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Label?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.project.lacliniqa.controllers.SetAppointmentController"
+      alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+      style="-fx-spacing: 15; -fx-padding: 15;">
+    <children>
+        <MFXTextField fx:id="appointmentTypeField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Appointment Type" />
+        <MFXButton fx:id="submitButton" alignment="CENTER" onAction="#handleSubmitButton" text="Submit" />
+        <Label fx:id="submitStatusLabel" textFill="#ea0909" />
+    </children>
+
+</VBox>

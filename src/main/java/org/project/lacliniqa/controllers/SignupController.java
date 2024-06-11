@@ -6,7 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import org.project.lacliniqa.globals.utils.PasswordHasher;
 import org.project.lacliniqa.globals.utils.Validators;
+import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.User;
+
+import static org.project.lacliniqa.globals.constants.EventConstants.SIGNUP_CMPLT_EVENT_ID;
 import static org.project.lacliniqa.globals.constants.MsgConstants.*;
 
 import java.sql.*;
@@ -20,7 +23,7 @@ public class SignupController {
     public MFXTextField signupIdField;
     public MFXPasswordField signupPasswordField;
     public MFXPasswordField signupRepasswordField;
-    public Label signupErrorLabel;
+    public Label signupStatusLabel;
 
     private boolean validateCredentials(String email, String fname, String lname, String phone, String id, String pass1, String pass2) {
         boolean valid = true;
@@ -48,7 +51,7 @@ public class SignupController {
         String uid = UUID.randomUUID().toString();
 
         if(!validateCredentials(email, fname, lname, phone, id, password1, password2)) {
-            signupErrorLabel.setText(INVALID_CREDENTIALS_MSG);
+            signupStatusLabel.setText(INVALID_CREDENTIALS_MSG);
             return;
         }
 
@@ -58,11 +61,23 @@ public class SignupController {
             User newUser = new User(uid, email, fname, lname, phone, id);
             newUser.registerUser(hashed_password);
 
-            signupErrorLabel.setText(USER_ADDED_MSG);
+            resetInputFields();
+
+            EventsManager.getInstance().fireEvent(SIGNUP_CMPLT_EVENT_ID);
         }
         catch (SQLException exception) {
-            signupErrorLabel.setText(exception.getMessage());
+            signupStatusLabel.setText(exception.getMessage());
             exception.printStackTrace();
         }
+    }
+
+    private void resetInputFields() {
+        signupEmailField.setText("");
+        signupFnameField.setText("");
+        signupLnameField.setText("");
+        signupPhoneField.setText("");
+        signupIdField.setText("");
+        signupPasswordField.setText("");
+        signupRepasswordField.setText("");
     }
 }

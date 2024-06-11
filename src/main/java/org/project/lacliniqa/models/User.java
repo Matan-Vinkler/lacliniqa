@@ -15,6 +15,8 @@ public class User {
     private String phone;
     private String id;
 
+    private static User currentUser = null;
+
     public User() {}
 
     public User(String uid, String email, String fname, String lname, String phone, String id) {
@@ -82,7 +84,7 @@ public class User {
         DBManager.getInstance().closedb();
     }
 
-    public static User getUser(String email, String password) throws SQLException {
+    public static User loginUser(String email, String password) throws SQLException {
         String mysql_query = String.format(MYSQL_SELECT_USER_QUERY, email, password);
 
         DBManager.getInstance().connectdb();
@@ -103,5 +105,31 @@ public class User {
 
         DBManager.getInstance().closedb();
         return user;
+    }
+
+    public void setUser(User other) {
+        uid = other.uid;
+        email = other.email;
+        fname = other.fname;
+        lname = other.lname;
+        phone = other.phone;
+        id = other.id;
+    }
+
+    public void unsetUser() {
+        uid = "";
+        email = "";
+        fname = "";
+        lname = "";
+        phone = "";
+        id = "";
+    }
+
+    public static User getCurrentUser() {
+        if(currentUser == null) {
+            currentUser = new User();
+        }
+
+        return currentUser;
     }
 }

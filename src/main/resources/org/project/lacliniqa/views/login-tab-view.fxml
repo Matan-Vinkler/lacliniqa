@@ -15,6 +15,6 @@
         <MFXTextField fx:id="loginEmailField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Email" />
         <MFXPasswordField fx:id="loginPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Password" />
         <MFXButton fx:id="loginButton" alignment="CENTER" onAction="#handleLoginButton" text="Login" />
-        <Label fx:id="loginErrorLabel" textFill="#ea0909" />
-</children>
+        <Label fx:id="loginStatusLabel" textFill="#ea0909" />
+    </children>
 </VBox>

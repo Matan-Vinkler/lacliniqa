@@ -5,14 +5,16 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import org.project.lacliniqa.globals.utils.PasswordHasher;
+import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.User;
-
 import java.sql.*;
+
+import static org.project.lacliniqa.globals.constants.EventConstants.LOGIN_CMPLT_EVENT_ID;
 
 public class LoginController {
     public MFXTextField loginEmailField;
     public MFXPasswordField loginPasswordField;
-    public Label loginErrorLabel;
+    public Label loginStatusLabel;
 
     public void handleLoginButton(ActionEvent actionEvent) {
         String email = loginEmailField.getText();
@@ -21,14 +23,23 @@ public class LoginController {
         String hashed_password = PasswordHasher.hash(password);
 
         try {
-            User user = User.getUser(email, hashed_password);
+            User user = User.loginUser(email, hashed_password);
             if(user != null) {
-                loginErrorLabel.setText("Welcome " + user.getFname() + " " + user.getLname());
+                User.getCurrentUser().setUser(user);
+
+                resetInputFields();
+
+                EventsManager.getInstance().fireEvent(LOGIN_CMPLT_EVENT_ID);
             }
         }
         catch (SQLException exception) {
-            loginErrorLabel.setText(exception.getMessage());
+            loginStatusLabel.setText(exception.getMessage());
             exception.printStackTrace();
         }
+    }
+
+    private void resetInputFields() {
+        loginEmailField.setText("");
+        loginPasswordField.setText("");
     }
 }
