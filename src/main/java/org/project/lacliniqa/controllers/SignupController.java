@@ -2,7 +2,6 @@ package org.project.lacliniqa.controllers;
 
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import org.project.lacliniqa.globals.utils.PasswordHasher;
 import org.project.lacliniqa.globals.utils.Validators;
@@ -38,7 +37,7 @@ public class SignupController {
         return valid;
     }
 
-    public void handleSignupButton(ActionEvent actionEvent) throws SQLException {
+    public void handleSignupButton() {
         String email = signupEmailField.getText().trim();
         String fname = signupFnameField.getText().trim();
         String lname = signupLnameField.getText().trim();
@@ -59,7 +58,7 @@ public class SignupController {
 
         try {
             User newUser = new User(uid, email, fname, lname, phone, id);
-            newUser.registerUser(hashed_password);
+            newUser.signupUser(hashed_password);
 
             resetInputFields();
 

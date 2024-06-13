@@ -12,9 +12,11 @@
       alignment="CENTER" prefHeight="200.0" prefWidth="100.0"
       style="-fx-spacing: 15; -fx-padding: 15;">
     <children>
-        <MFXTextField fx:id="loginEmailField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Email" />
-        <MFXPasswordField fx:id="loginPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Password" />
-        <MFXButton fx:id="loginButton" alignment="CENTER" onAction="#handleLoginButton" text="Login" />
-        <Label fx:id="loginStatusLabel" textFill="#ea0909" />
+        <MFXTextField fx:id="loginEmailField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                      prefWidth="170.0" promptText="Email"/>
+        <MFXPasswordField fx:id="loginPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                          prefWidth="170.0" promptText="Password"/>
+        <MFXButton alignment="CENTER" onAction="#handleLoginButton" text="Login"/>
+        <Label fx:id="loginStatusLabel" textFill="#ea0909"/>
     </children>
 </VBox>

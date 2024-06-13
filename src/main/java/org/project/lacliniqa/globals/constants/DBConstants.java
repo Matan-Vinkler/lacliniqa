@@ -5,6 +5,9 @@ public class DBConstants {
     public static final String MYSQL_USERNAME = "root";
     public static final String MYSQL_PASSWORD = "root";
 
-    public static final String MYSQL_INSERT_USER_QUERY = "INSERT INTO `users` (`uid`,`email`,`fname`,`lname`,`phone`,`id`,`password`) VALUES ('%s','%s','%s','%s','%s','%s','%s');";
-    public static final String MYSQL_SELECT_USER_QUERY = "SELECT * FROM `users` WHERE `email`='%s' AND `password`='%s';";
+    public static final String MYSQL_SIGNUP_USER_QUERY = "INSERT INTO `users` (`uid`,`email`,`fname`,`lname`,`phone`,`id`,`password`) VALUES (?,?,?,?,?,?,?);";
+    public static final String MYSQL_LOGIN_USER_QUERY = "SELECT * FROM `users` WHERE `email`=? AND `password`=?;";
+    public static final String MYSQL_GET_USER_QUERY = "SELECT * FROM `users` WHERE `uid`=? AND `password`=?;";
+
+    public static final String MYSQL_SAVE_APPOINTMENT_QUERY = "INSERT INTO `appointments`(`aid`,`userId`,`type`,`subtype`,`date`,`time`) VALUES (?,?,?,?,?,?);";
 }
