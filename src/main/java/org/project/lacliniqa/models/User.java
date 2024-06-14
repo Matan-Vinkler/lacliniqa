@@ -109,8 +109,8 @@ public class User {
         return user;
     }
 
-    public static User getUserFromUid(String uid, String password) throws SQLException {
-        List<String> params = Arrays.asList(uid, password);
+    public static User getUserFromUid(String uid) throws SQLException {
+        List<String> params = Arrays.asList(uid);
 
         DBManager.getInstance().connectdb();
         ResultSet set = DBManager.getInstance().executeQueryWithResult(MYSQL_GET_USER_QUERY, params);

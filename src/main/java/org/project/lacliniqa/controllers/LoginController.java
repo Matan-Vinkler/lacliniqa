@@ -9,7 +9,6 @@ import org.project.lacliniqa.models.User;
 import java.sql.*;
 import java.util.prefs.Preferences;
 
-import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVED_USER_PASSWORD;
 import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVE_USER_UID;
 import static org.project.lacliniqa.globals.constants.EventConstants.LOGIN_CMPLT_EVENT_ID;
 
@@ -31,7 +30,6 @@ public class LoginController {
 
                 Preferences prefs = Preferences.systemNodeForPackage(AppController.class);
                 prefs.put(PREFS_SAVE_USER_UID, user.getUid());
-                prefs.put(PREFS_SAVED_USER_PASSWORD, hashed_password);
 
                 resetInputFields();
 

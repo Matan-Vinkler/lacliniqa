@@ -6,7 +6,6 @@ import org.project.lacliniqa.models.User;
 
 import java.util.prefs.Preferences;
 
-import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVED_USER_PASSWORD;
 import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVE_USER_UID;
 import static org.project.lacliniqa.globals.constants.EventConstants.LOGOUT_CMPLT_EVENT_ID;
 
@@ -18,7 +17,6 @@ public class LogoutController {
 
         Preferences prefs = Preferences.systemNodeForPackage(AppController.class);
         prefs.remove(PREFS_SAVE_USER_UID);
-        prefs.remove(PREFS_SAVED_USER_PASSWORD);
 
         EventsManager.getInstance().fireEvent(LOGOUT_CMPLT_EVENT_ID);
     }

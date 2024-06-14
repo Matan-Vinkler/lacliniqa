@@ -2,10 +2,13 @@ package org.project.lacliniqa.models;
 
 import org.project.lacliniqa.managers.DBManager;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY;
 import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_SAVE_APPOINTMENT_QUERY;
 
 public class Appointment {
@@ -81,5 +84,30 @@ public class Appointment {
         DBManager.getInstance().connectdb();
         DBManager.getInstance().executeQuery(MYSQL_SAVE_APPOINTMENT_QUERY, params);
         DBManager.getInstance().closedb();
+    }
+
+    public static ArrayList<Appointment> getAppointments(String userId) throws SQLException {
+        List<String> params = Arrays.asList(userId);
+
+        DBManager.getInstance().connectdb();
+        ResultSet resultSet = DBManager.getInstance().executeQueryWithResult(MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY, params);
+
+        ArrayList<Appointment> returnAppointments = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Appointment appointment = new Appointment();
+
+            appointment.setAid(resultSet.getString("aid"));
+            appointment.setUserId(resultSet.getString("userId"));
+            appointment.setType(resultSet.getString("type"));
+            appointment.setSubtype(resultSet.getString("subtype"));
+            appointment.setDate(resultSet.getString("date"));
+            appointment.setTime(resultSet.getString("time"));
+
+            returnAppointments.add(appointment);
+        }
+
+        DBManager.getInstance().closedb();
+        return  returnAppointments;
     }
 }

@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVED_USER_PASSWORD;
 import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVE_USER_UID;
 import static org.project.lacliniqa.globals.constants.EventConstants.*;
 
@@ -21,6 +20,7 @@ public class AppController {
     public Tab signupTab;
     public Tab setappointmentTab;
     public Tab logoutTab;
+    public Tab appointmentsListTab;
 
     private List<Tab> userLoggedTabs;
     private List<Tab> userNotLoggedTabs;
@@ -40,8 +40,11 @@ public class AppController {
             tab.setDisable(false);
         }
 
+        /* Fetch appointments list */
+        EventsManager.getInstance().fireEvent(FETCH_APPOINTMENTS_LIST_EVENT_ID);
+
         /* Navigate to home tab */
-        appTabPane.getSelectionModel().select(setappointmentTab);
+        appTabPane.getSelectionModel().select(appointmentsListTab);
 
         return 0;
     }
@@ -70,14 +73,18 @@ public class AppController {
         return 0;
     }
 
+    public int gotoAppointments() {
+        appTabPane.getSelectionModel().select(appointmentsListTab);
+        return 0;
+    }
+
     public void checkLogin() {
         Preferences prefs = Preferences.systemNodeForPackage(AppController.class);
 
         String uid = prefs.get(PREFS_SAVE_USER_UID, "");
-        String hased_password = prefs.get(PREFS_SAVED_USER_PASSWORD, "");
 
         try {
-            User user = User.getUserFromUid(uid, hased_password);
+            User user = User.getUserFromUid(uid);
 
             if(user != null) {
                 User.getCurrentUser().setUser(user);
@@ -92,13 +99,14 @@ public class AppController {
     @FXML
     public void initialize() {
         /* Define user logged in and not logged in tabs */
-        userLoggedTabs = Arrays.asList(setappointmentTab, logoutTab);
+        userLoggedTabs = Arrays.asList(appointmentsListTab, setappointmentTab, logoutTab);
         userNotLoggedTabs = Arrays.asList(loginTab, signupTab);
 
         /* Register app events */
         EventsManager.getInstance().registerEvent(LOGIN_CMPLT_EVENT_ID, this::handleLoginComplete);
         EventsManager.getInstance().registerEvent(SIGNUP_CMPLT_EVENT_ID, this::handleSignupComplete);
         EventsManager.getInstance().registerEvent(LOGOUT_CMPLT_EVENT_ID, this::handlelogoutComplete);
+        EventsManager.getInstance().registerEvent(GOTO_APPOINTMENTS_EVENT_ID, this::gotoAppointments);
 
         checkLogin();
     }

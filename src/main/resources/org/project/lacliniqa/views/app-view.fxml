@@ -17,6 +17,11 @@
                 <fx:include source="signup-tab-view.fxml"/>
             </content>
         </Tab>
+        <Tab fx:id="appointmentsListTab" disable="true" text="Appointments">
+            <content>
+                <fx:include source="appointments-list-view.fxml"></fx:include>
+            </content>
+        </Tab>
         <Tab fx:id="setappointmentTab" disable="true" text="Set Appointment">
             <content>
                 <fx:include source="set-appointment-tab-view.fxml"/>

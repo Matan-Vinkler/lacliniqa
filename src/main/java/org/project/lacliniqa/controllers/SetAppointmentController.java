@@ -5,6 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
+import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.Appointment;
 import org.project.lacliniqa.models.User;
 
@@ -16,6 +17,8 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
 
+import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_APPOINTMENTS_LIST_EVENT_ID;
+import static org.project.lacliniqa.globals.constants.EventConstants.GOTO_APPOINTMENTS_EVENT_ID;
 import static org.project.lacliniqa.globals.constants.MsgConstants.*;
 import static org.project.lacliniqa.globals.constants.ValidatorConstants.*;
 
@@ -81,11 +84,23 @@ public class SetAppointmentController {
         Appointment appointment = new Appointment(aid, userId, type, subtype, date, time);
         try {
             appointment.saveAppointment();
-            submitStatusLabel.setText(APPOINTMENT_SAVED_MSG);
+
+            EventsManager.getInstance().fireEvent(FETCH_APPOINTMENTS_LIST_EVENT_ID);
+            EventsManager.getInstance().fireEvent(GOTO_APPOINTMENTS_EVENT_ID);
         }
         catch (SQLException e) {
             submitStatusLabel.setText(APPOINTMENT_SAVE_ERROR_MSG);
             e.printStackTrace();
         }
+
+        resetInputFields();
+    }
+
+    private void resetInputFields() {
+        appointmentTypeField.setText("");
+        appointmentSubtypeField.setText("");
+        appointmentDatePicker.setText("");
+        appointmentHourField.setText("00");
+        appointmentMinuteField.setText("00");
     }
 }
