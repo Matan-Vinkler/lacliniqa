@@ -16,18 +16,20 @@ public class User {
     private String lname;
     private String phone;
     private String id;
+    private boolean is_admin;
 
     private static User currentUser = null;
 
     public User() {}
 
-    public User(String uid, String email, String fname, String lname, String phone, String id) {
+    public User(String uid, String email, String fname, String lname, String phone, String id, boolean is_admin) {
         this.uid = uid;
         this.email = email;
         this.fname = fname;
         this.lname = lname;
         this.phone = phone;
         this.id = id;
+        this.is_admin = is_admin;
     }
 
     public User(User other)
@@ -38,6 +40,7 @@ public class User {
         this.lname = other.lname;
         this.phone = other.phone;
         this.id = other.id;
+        this.is_admin = other.is_admin;
     }
 
     public String getUid() {
@@ -88,6 +91,14 @@ public class User {
         this.phone = phone;
     }
 
+    public void setAdmin(boolean is_admin) {
+        this.is_admin = is_admin;
+    }
+
+    public boolean isAdmin() {
+        return is_admin;
+    }
+
     public void signupUser(String password) throws SQLException {
         List<String> params = Arrays.asList(uid, email, fname, lname, phone, id, password);
 
@@ -113,6 +124,7 @@ public class User {
             user.setLname(set.getString("lname"));
             user.setPhone(set.getString("phone"));
             user.setId(set.getString("id"));
+            user.setAdmin(set.getBoolean("is_admin"));
         }
 
         DBManager.getInstance().closedb();
@@ -136,6 +148,7 @@ public class User {
             user.setLname(set.getString("lname"));
             user.setPhone(set.getString("phone"));
             user.setId(set.getString("id"));
+            user.setAdmin(set.getBoolean("is_admin"));
         }
 
         DBManager.getInstance().closedb();
@@ -149,6 +162,7 @@ public class User {
         lname = other.lname;
         phone = other.phone;
         id = other.id;
+        is_admin = other.is_admin;
     }
 
     public void unsetUser() {
@@ -158,6 +172,7 @@ public class User {
         lname = "";
         phone = "";
         id = "";
+        is_admin = false;
     }
 
     public static User getCurrentUser() {

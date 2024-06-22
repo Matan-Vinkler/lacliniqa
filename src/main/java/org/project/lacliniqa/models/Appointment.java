@@ -108,6 +108,28 @@ public class Appointment {
         return  returnAppointments;
     }
 
+    public static ArrayList<Appointment> getAllAppointments() throws SQLException {
+        DBManager.getInstance().connectdb();
+        ResultSet resultSet = DBManager.getInstance().executeQueryWithResult(MYSQL_GET_ALL_APPOINTMENTS_QUERY);
+
+        ArrayList<Appointment> returnAppointments = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Appointment appointment = new Appointment();
+
+            appointment.setAid(resultSet.getString("aid"));
+            appointment.setUserId(resultSet.getString("userId"));
+            appointment.setTypeId(resultSet.getString("typeId"));
+            appointment.setSubtype(resultSet.getString("subtype"));
+            appointment.setDatetime(resultSet.getString("datetime"));
+
+            returnAppointments.add(appointment);
+        }
+
+        DBManager.getInstance().closedb();
+        return  returnAppointments;
+    }
+
     public static void deleteAppointment(String aid) throws SQLException
     {
         List<String> params = Arrays.asList(aid);

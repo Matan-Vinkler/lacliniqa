@@ -13,6 +13,7 @@ import org.project.lacliniqa.models.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_APPOINTMENTS_LIST_EVENT_ID;
@@ -54,8 +55,17 @@ public class AppointmentsListController implements Initializable {
         appointmentsListView.setCellFactory(listView -> new AppointmentListCell());
 
         try {
+            ArrayList<Appointment> appointmentsList;
+            if(User.getCurrentUser().isAdmin()) {
+                appointmentsList = Appointment.getAllAppointments();
+            }
+            else {
+                appointmentsList = Appointment.getAppointments(User.getCurrentUser().getUid());
+            }
+
             appointmentsListView.getItems().clear();
-            appointmentsListView.getItems().addAll(Appointment.getAppointments(User.getCurrentUser().getUid()));
+            appointmentsListView.getItems().addAll(appointmentsList);
+
             return 0;
         } catch (SQLException e) {
             e.printStackTrace();

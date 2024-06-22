@@ -57,7 +57,7 @@ public class SignupController {
         String hashed_password = PasswordHasher.hash(password1);
 
         try {
-            User newUser = new User(uid, email, fname, lname, phone, id);
+            User newUser = new User(uid, email, fname, lname, phone, id, false);
             newUser.signupUser(hashed_password);
 
             resetInputFields();
