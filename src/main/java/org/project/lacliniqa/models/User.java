@@ -30,6 +30,16 @@ public class User {
         this.id = id;
     }
 
+    public User(User other)
+    {
+        this.uid = other.uid;
+        this.email = other.email;
+        this.fname = other.fname;
+        this.lname = other.lname;
+        this.phone = other.phone;
+        this.id = other.id;
+    }
+
     public String getUid() {
         return uid;
     }

@@ -8,27 +8,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY;
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_SAVE_APPOINTMENT_QUERY;
+import static org.project.lacliniqa.globals.constants.DBConstants.*;
 
 public class Appointment {
     private String aid = "";
     private String userId = "";
-    private String type = "";
+    private String typeId = "";
     private String subtype = "";
-    private String date = "";
-    private String time = "";
+    private String datetime = "";
 
-    public Appointment(String aid, String userId, String type, String subtype, String date, String time) {
+    public Appointment(String aid, String userId, String typeId, String subtype, String datetime) {
         this.aid = aid;
         this.userId = userId;
-        this.type = type;
+        this.typeId = typeId;
         this.subtype = subtype;
-        this.date = date;
-        this.time = time;
+        this.datetime = datetime;
     }
 
     public Appointment() {}
+
+    public Appointment(Appointment other)
+    {
+        this.aid = other.aid;
+        this.userId = other.userId;
+        this.typeId = other.typeId;
+        this.subtype = other.subtype;
+        this.datetime = other.datetime;
+    }
 
     public String getAid() {
         return aid;
@@ -46,12 +52,12 @@ public class Appointment {
         this.userId = userId;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
     public String getSubtype() {
@@ -62,24 +68,16 @@ public class Appointment {
         this.subtype = subtype;
     }
 
-    public String getDate() {
-        return date;
+    public String getDatetime() {
+        return datetime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 
     public void saveAppointment() throws SQLException {
-        List<String> params = Arrays.asList(aid, userId, type, subtype, date, time);
+        List<String> params = Arrays.asList(aid, userId, typeId, subtype, datetime);
 
         DBManager.getInstance().connectdb();
         DBManager.getInstance().executeQuery(MYSQL_SAVE_APPOINTMENT_QUERY, params);
@@ -99,15 +97,23 @@ public class Appointment {
 
             appointment.setAid(resultSet.getString("aid"));
             appointment.setUserId(resultSet.getString("userId"));
-            appointment.setType(resultSet.getString("type"));
+            appointment.setTypeId(resultSet.getString("typeId"));
             appointment.setSubtype(resultSet.getString("subtype"));
-            appointment.setDate(resultSet.getString("date"));
-            appointment.setTime(resultSet.getString("time"));
+            appointment.setDatetime(resultSet.getString("datetime"));
 
             returnAppointments.add(appointment);
         }
 
         DBManager.getInstance().closedb();
         return  returnAppointments;
+    }
+
+    public static void deleteAppointment(String aid) throws SQLException
+    {
+        List<String> params = Arrays.asList(aid);
+
+        DBManager.getInstance().connectdb();
+        DBManager.getInstance().executeQuery(MYSQL_DELETE_APPOINTMENT_QUERY, params);
+        DBManager.getInstance().closedb();
     }
 }

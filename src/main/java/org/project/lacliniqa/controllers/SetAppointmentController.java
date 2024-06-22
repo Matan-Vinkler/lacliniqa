@@ -1,79 +1,60 @@
 package org.project.lacliniqa.controllers;
 
-import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
 import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.Appointment;
+import org.project.lacliniqa.models.AppointmentType;
+import org.project.lacliniqa.models.AvailableDate;
 import org.project.lacliniqa.models.User;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.UUID;
-import java.util.function.UnaryOperator;
 
 import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_APPOINTMENTS_LIST_EVENT_ID;
 import static org.project.lacliniqa.globals.constants.EventConstants.GOTO_APPOINTMENTS_EVENT_ID;
 import static org.project.lacliniqa.globals.constants.MsgConstants.*;
-import static org.project.lacliniqa.globals.constants.ValidatorConstants.*;
 
 public class SetAppointmentController {
-    public MFXTextField appointmentTypeField;
+    public MFXComboBox appointmentTypeBox;
     public MFXTextField appointmentSubtypeField;
-    public MFXTextField appointmentHourField;
-    public MFXTextField appointmentMinuteField;
-    public MFXDatePicker appointmentDatePicker;
+    public MFXComboBox appointmentDatetimeBox;
     public Label submitStatusLabel;
+
+    ArrayList<AppointmentType> appointmentTypes;
+    ArrayList<AvailableDate> availableDates;
 
     @FXML
     public void initialize() {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String text = change.getText();
-
-            if (text.matches("\\d?")) {
-                return change;
+        try {
+            appointmentTypes = AppointmentType.getTypes();
+            for(AppointmentType type: appointmentTypes) {
+                appointmentTypeBox.getItems().add(type.getTypename());
             }
 
-            return null;
-        };
-
-        appointmentHourField.delegateSetTextFormatter(new TextFormatter<String>(filter));
-        appointmentMinuteField.delegateSetTextFormatter(new TextFormatter<String>(filter));
+            availableDates = AvailableDate.getDates();
+            for(AvailableDate date: availableDates) {
+                appointmentDatetimeBox.getItems().add(date.getDatetime());
+            }
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
-    public boolean validateCredentials(String type, String subtype, int hour, int minute) {
-        if (hour < MIN_HOUR || hour > MAX_HOUR) {
-            return false;
-        }
-        if (minute < MIN_MINUTE || minute > MAX_MINUTR) {
-            return false;
-        }
-
-        return !type.isEmpty() && !subtype.isEmpty();
+    public boolean validateCredentials(String type, String subtype, String date) {
+        return !type.isEmpty() && !subtype.isEmpty() && !date.isEmpty();
     }
 
     public void handleSubmitButton() {
-        String type = appointmentTypeField.getText();
+        String typeId = appointmentTypes.get(appointmentTypeBox.getSelectedIndex()).getTid();
         String subtype = appointmentSubtypeField.getText();
+        String date = appointmentDatetimeBox.getText();
 
-        LocalDate selectedDate = LocalDate.parse(appointmentDatePicker.getText(), DateTimeFormatter.ofPattern(APPOINTMENT_DATEPICKER_FORMAT));
-        String date = selectedDate.format(DateTimeFormatter.ofPattern(APPOINTMENT_MYSQL_FORMAT));
-
-        int hour = Integer.parseInt(appointmentHourField.getText());
-        int minute = Integer.parseInt(appointmentMinuteField.getText());
-        SimpleDateFormat timeFormat = new SimpleDateFormat(APPOINTMENT_TIME_FORMAT);
-        Date timeObj = new Date();
-        timeObj.setHours(hour);
-        timeObj.setMinutes(minute);
-        timeObj.setSeconds(0);
-        String time = timeFormat.format(timeObj);
-
-        if(!validateCredentials(type, subtype, hour, minute)) {
+        if(!validateCredentials(typeId, subtype, date)) {
             submitStatusLabel.setText(INVALID_CREDENTIALS_MSG);
             return;
         }
@@ -81,7 +62,7 @@ public class SetAppointmentController {
         String userId = User.getCurrentUser().getUid();
         String aid = UUID.randomUUID().toString();
 
-        Appointment appointment = new Appointment(aid, userId, type, subtype, date, time);
+        Appointment appointment = new Appointment(aid, userId, typeId, subtype, date);
         try {
             appointment.saveAppointment();
 
@@ -97,10 +78,8 @@ public class SetAppointmentController {
     }
 
     private void resetInputFields() {
-        appointmentTypeField.setText("");
+        appointmentTypeBox.setText("");
         appointmentSubtypeField.setText("");
-        appointmentDatePicker.setText("");
-        appointmentHourField.setText("00");
-        appointmentMinuteField.setText("00");
+        appointmentDatetimeBox.setText("");
     }
 }

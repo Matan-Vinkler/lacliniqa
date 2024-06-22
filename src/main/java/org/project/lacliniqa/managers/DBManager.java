@@ -17,23 +17,34 @@ public class DBManager {
     public void executeQuery(String mysql_query_pattern, List<String> params) throws SQLException {
         PreparedStatement statement = dbConnection.prepareStatement(mysql_query_pattern);
 
-        for(int i = 0; i < params.size(); i++)
-        {
-            statement.setString(i + 1, params.get(i));
+        if(params != null) {
+            for (int i = 0; i < params.size(); i++) {
+                statement.setString(i + 1, params.get(i));
+            }
         }
 
         statement.execute();
     }
 
-    public ResultSet executeQueryWithResult(String mysql_query_patterns, List<String> params) throws SQLException {
-        PreparedStatement statement = dbConnection.prepareStatement(mysql_query_patterns);
+    public void executeQuery(String mysql_query_pattern) throws SQLException {
+        executeQuery(mysql_query_pattern, null);
+    }
 
-        for(int i = 0; i < params.size(); i++) {
-            statement.setString(i + 1, params.get(i));
+    public ResultSet executeQueryWithResult(String mysql_query_pattern, List<String> params) throws SQLException {
+        PreparedStatement statement = dbConnection.prepareStatement(mysql_query_pattern);
+
+        if(params != null) {
+            for (int i = 0; i < params.size(); i++) {
+                statement.setString(i + 1, params.get(i));
+            }
         }
 
         ResultSet resultSet = statement.executeQuery();
         return resultSet;
+    }
+
+    public ResultSet executeQueryWithResult(String mysql_query_pattern) throws SQLException {
+        return executeQueryWithResult(mysql_query_pattern, null);
     }
 
     public void closedb() throws SQLException {
