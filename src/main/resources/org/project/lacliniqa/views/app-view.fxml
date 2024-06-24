@@ -30,5 +30,8 @@
         <Tab fx:id="logoutTab" disable="true" text="Logout">
             <fx:include source="logout-tab-view.fxml"/>
         </Tab>
+        <Tab fx:id="adminTab" disable="true" text="Admin">
+            <fx:include source="admin-tab-view.fxml"/>
+        </Tab>
     </tabs>
 </TabPane>

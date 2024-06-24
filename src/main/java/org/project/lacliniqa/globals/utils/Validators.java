@@ -83,4 +83,8 @@ public class Validators {
 
         return hasLetter && hasDigit && hasSpecialChar;
     }
+
+    public static boolean validateTime(int hour, int minute) {
+        return (hour >= MIN_HOUR && hour <= MAX_HOUR && minute >= MIN_MINUTE && minute <= MAX_MINUTR);
+    }
 }

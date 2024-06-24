@@ -2,29 +2,32 @@ package org.project.lacliniqa.models;
 
 import org.project.lacliniqa.managers.DBManager;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_GET_APPOINTMENT_TYPES_QUERY;
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_GET_APPOINTMENT_TYPE_QUERY;
+import static org.project.lacliniqa.globals.constants.DBConstants.*;
 
 public class AppointmentType {
     String tid;
     String typename;
+    int price;
 
     public AppointmentType() {}
 
-    public AppointmentType(String tid, String typename) {
+    public AppointmentType(String tid, String typename, int price) {
         this.tid = tid;
         this.typename = typename;
+        this.price = price;
     }
 
     public AppointmentType(AppointmentType other) {
         this.tid = other.tid;
         this.typename = other.typename;
+        this.price = other.price;
     }
 
     public String getTid() {
@@ -43,6 +46,22 @@ public class AppointmentType {
         this.typename = typename;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void saveType() throws SQLException {
+        List<String> params = Arrays.asList(tid, typename, Integer.toString(price));
+
+        DBManager.getInstance().connectdb();
+        DBManager.getInstance().executeQuery(MYSQL_SAVE_APPOINTMENT_TYPE_QUERY, params);
+        DBManager.getInstance().closedb();
+    }
+
     public static AppointmentType getType(String tid) throws SQLException {
         List<String> params = Arrays.asList(tid);
 
@@ -53,6 +72,7 @@ public class AppointmentType {
         set.next();
         appointmentType.setTid(set.getString("tid"));
         appointmentType.setTypename(set.getString("typename"));
+        appointmentType.setPrice(set.getInt("price"));
 
         DBManager.getInstance().closedb();
 
@@ -69,6 +89,7 @@ public class AppointmentType {
 
             appointmentType.setTid(set.getString("tid"));
             appointmentType.setTypename(set.getString("typename"));
+            appointmentType.setPrice(set.getInt("price"));
 
             ret.add(appointmentType);
         }

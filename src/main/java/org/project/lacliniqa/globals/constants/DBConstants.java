@@ -16,6 +16,8 @@ public class DBConstants {
 
     public static final String MYSQL_GET_APPOINTMENT_TYPES_QUERY = "SELECT * FROM `appointment_types`;";
     public static final String MYSQL_GET_APPOINTMENT_TYPE_QUERY = "SELECT * FROM `appointment_types` WHERE `tid`=?;";
+    public static final String MYSQL_SAVE_APPOINTMENT_TYPE_QUERY = "INSERT INTO `appointment_types` (`tid`,`typename`,`price`) VALUES (?,?,?);";
 
     public static final String MYSQL_GET_AVAILABLE_DATES_QUERY = "SELECT * FROM `available_dates`";
+    public static final String MYSQL_SAVE_AVAILABLE_DATE_QUERY = "INSERT INTO `available_dates` (`did`,`datetime`) VALUES (?,?);";
 }

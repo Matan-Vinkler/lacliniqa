@@ -21,6 +21,7 @@ public class AppController {
     public Tab setappointmentTab;
     public Tab logoutTab;
     public Tab appointmentsListTab;
+    public Tab adminTab;
 
     private List<Tab> userLoggedTabs;
     private List<Tab> userNotLoggedTabs;
@@ -39,6 +40,9 @@ public class AppController {
         for(Tab tab: userLoggedTabs) {
             tab.setDisable(false);
         }
+
+        /* Enable admin tab if user is admin */
+        adminTab.setDisable(!User.getCurrentUser().isAdmin());
 
         /* Fetch appointments list */
         EventsManager.getInstance().fireEvent(FETCH_APPOINTMENTS_LIST_EVENT_ID);
@@ -66,6 +70,9 @@ public class AppController {
         for(Tab tab: userLoggedTabs) {
             tab.setDisable(true);
         }
+
+        /* Disable admin tab */
+        adminTab.setDisable(true);
 
         /* Navigate to login tab */
         appTabPane.getSelectionModel().select(loginTab);

@@ -70,7 +70,7 @@ public class SetAppointmentController {
             EventsManager.getInstance().fireEvent(GOTO_APPOINTMENTS_EVENT_ID);
         }
         catch (SQLException e) {
-            submitStatusLabel.setText(APPOINTMENT_SAVE_ERROR_MSG);
+            submitStatusLabel.setText(SAVE_ERROR_MSG);
             e.printStackTrace();
         }
 
