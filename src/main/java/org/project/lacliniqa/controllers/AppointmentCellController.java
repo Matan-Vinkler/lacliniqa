@@ -3,6 +3,8 @@ package org.project.lacliniqa.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.Appointment;
 import org.project.lacliniqa.models.AppointmentType;
@@ -11,12 +13,15 @@ import org.project.lacliniqa.models.User;
 import java.sql.SQLException;
 
 import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_APPOINTMENTS_LIST_EVENT_ID;
+import static org.project.lacliniqa.globals.constants.MsgConstants.PAID_MSG;
+import static org.project.lacliniqa.globals.constants.MsgConstants.UNPAID_MSG;
 
 public class AppointmentCellController {
     public Label appointmentName;
     public Label appointmentDatetime;
     public Label appointmentType;
     public Label appointmentSubtype;
+    public Label paidLabel;
 
     private Appointment appointment;
 
@@ -30,6 +35,15 @@ public class AppointmentCellController {
 
         User user = User.getUserFromUid(appointment.getUserId());
         appointmentName.setText(user.getFname() + " " + user.getLname());
+
+        if(appointment.isPaid()) {
+            paidLabel.setText(PAID_MSG);
+            paidLabel.setTextFill(Color.GREEN);
+        }
+        else {
+            paidLabel.setText(UNPAID_MSG);
+            paidLabel.setTextFill(Color.RED);
+        }
     }
 
     public void handleCancel(ActionEvent actionEvent) {

@@ -2,6 +2,7 @@ package org.project.lacliniqa.controllers;
 
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.project.lacliniqa.managers.EventsManager;
@@ -14,8 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_APPOINTMENTS_LIST_EVENT_ID;
-import static org.project.lacliniqa.globals.constants.EventConstants.GOTO_APPOINTMENTS_EVENT_ID;
+import static org.project.lacliniqa.globals.constants.EventConstants.*;
 import static org.project.lacliniqa.globals.constants.MsgConstants.*;
 
 public class SetAppointmentController {
@@ -29,19 +29,40 @@ public class SetAppointmentController {
 
     @FXML
     public void initialize() {
+        fetchTypes();
+        fetchDates();
+
+        EventsManager.getInstance().registerEvent(FETCH_TYPES_EVENT_ID, this::fetchTypes);
+        EventsManager.getInstance().registerEvent(FETCH_DATES_EVENT_ID, this::fetchDates);
+    }
+
+    public int fetchTypes() {
         try {
             appointmentTypes = AppointmentType.getTypes();
             for(AppointmentType type: appointmentTypes) {
                 appointmentTypeBox.getItems().add(type.getTypename());
             }
 
+            return 0;
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int fetchDates() {
+        try {
             availableDates = AvailableDate.getDates();
             for(AvailableDate date: availableDates) {
                 appointmentDatetimeBox.getItems().add(date.getDatetime());
             }
+
+            return 0;
         }
         catch (SQLException exception) {
             exception.printStackTrace();
+            return -1;
         }
     }
 

@@ -14,10 +14,17 @@
             <children>
                 <MFXTextField fx:id="typenameField" layoutX="224.0" layoutY="135.0" minHeight="-Infinity"
                               minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Typename"/>
-                <Spinner fx:id="priceSpinner" editable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                <Spinner fx:id="priceSpinner" editable="true" minHeight="-Infinity" minWidth="-Infinity"
+                         prefHeight="30.0"
                          prefWidth="170.0"/>
                 <MFXButton alignment="CENTER" onAction="#handleAddType" text="Add Appointment Type"/>
                 <Label fx:id="addTypeStatusLabel" textFill="#ea0909"/>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" style="-fx-spacing: 15; -fx-padding: 15;">
+            <children>
+                <MFXButton alignment="CENTER" onAction="#handleBackup" text="Backup"/>
+                <Label fx:id="backupStatusLabel" textFill="#ea0909"/>
             </children>
         </VBox>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-spacing: 15; -fx-padding: 15;">

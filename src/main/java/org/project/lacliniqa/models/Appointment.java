@@ -16,6 +16,7 @@ public class Appointment {
     private String typeId = "";
     private String subtype = "";
     private String datetime = "";
+    private boolean paid = false;
 
     public Appointment(String aid, String userId, String typeId, String subtype, String datetime) {
         this.aid = aid;
@@ -34,6 +35,7 @@ public class Appointment {
         this.typeId = other.typeId;
         this.subtype = other.subtype;
         this.datetime = other.datetime;
+        this.paid = other.paid;
     }
 
     public String getAid() {
@@ -76,6 +78,14 @@ public class Appointment {
         this.datetime = datetime;
     }
 
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
     public void saveAppointment() throws SQLException {
         List<String> params = Arrays.asList(aid, userId, typeId, subtype, datetime);
 
@@ -85,10 +95,19 @@ public class Appointment {
     }
 
     public static ArrayList<Appointment> getAppointments(String userId) throws SQLException {
+        return getAppointments(userId, false);
+    }
+
+    public static ArrayList<Appointment> getAppointments(String userId, boolean paid_filter) throws SQLException {
         List<String> params = Arrays.asList(userId);
 
+        String mysql_query = MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY;
+        if(paid_filter) {
+            mysql_query = MYSQL_GET_UNPAID_APPOINTMENTS_FROM_UID_QUERY;
+        }
+
         DBManager.getInstance().connectdb();
-        ResultSet resultSet = DBManager.getInstance().executeQueryWithResult(MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY, params);
+        ResultSet resultSet = DBManager.getInstance().executeQueryWithResult(mysql_query, params);
 
         ArrayList<Appointment> returnAppointments = new ArrayList<>();
 
@@ -100,6 +119,7 @@ public class Appointment {
             appointment.setTypeId(resultSet.getString("typeId"));
             appointment.setSubtype(resultSet.getString("subtype"));
             appointment.setDatetime(resultSet.getString("datetime"));
+            appointment.setPaid(resultSet.getBoolean("paid"));
 
             returnAppointments.add(appointment);
         }
@@ -122,6 +142,7 @@ public class Appointment {
             appointment.setTypeId(resultSet.getString("typeId"));
             appointment.setSubtype(resultSet.getString("subtype"));
             appointment.setDatetime(resultSet.getString("datetime"));
+            appointment.setPaid(resultSet.getBoolean("paid"));
 
             returnAppointments.add(appointment);
         }
@@ -136,6 +157,35 @@ public class Appointment {
 
         DBManager.getInstance().connectdb();
         DBManager.getInstance().executeQuery(MYSQL_DELETE_APPOINTMENT_QUERY, params);
+        DBManager.getInstance().closedb();
+    }
+
+    public AppointmentType getType() throws SQLException {
+        List<String> params = Arrays.asList(typeId);
+
+        DBManager.getInstance().connectdb();
+
+        AppointmentType returnType = null;
+        ResultSet resultSet = DBManager.getInstance().executeQueryWithResult(MYSQL_GET_APPOINTMENT_TYPE_QUERY, params);
+
+        if(resultSet.next()) {
+            returnType = new AppointmentType();
+
+            returnType.setTid(resultSet.getString("tid"));
+            returnType.setTypename(resultSet.getString("typename"));
+            returnType.setPrice(resultSet.getInt("price"));
+        }
+
+        DBManager.getInstance().closedb();
+        return returnType;
+    }
+
+    public void updateAppointment() throws SQLException {
+        int paidInt = paid ? 1 : 0;
+        List<String> params = Arrays.asList(userId, typeId, subtype, datetime, Integer.toString(paidInt), aid);
+
+        DBManager.getInstance().connectdb();
+        DBManager.getInstance().executeQuery(MYSQL_UPDATE_APPOINTMENT_QUERY, params);
         DBManager.getInstance().closedb();
     }
 }

@@ -4,6 +4,8 @@ module org.project.lacliniqa {
     requires MaterialFX;
     requires java.sql;
     requires java.prefs;
+    requires jdk.jsobject;
+    requires org.json;
 
     exports org.project.lacliniqa;
     opens org.project.lacliniqa to javafx.fxml;

@@ -10,6 +10,8 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextFormatter;
 import org.project.lacliniqa.globals.utils.DateFormatter;
 import org.project.lacliniqa.globals.utils.Validators;
+import org.project.lacliniqa.managers.DBManager;
+import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.AppointmentType;
 import org.project.lacliniqa.models.AvailableDate;
 
@@ -17,6 +19,8 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
 
+import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_DATES_EVENT_ID;
+import static org.project.lacliniqa.globals.constants.EventConstants.FETCH_TYPES_EVENT_ID;
 import static org.project.lacliniqa.globals.constants.MsgConstants.*;
 
 public class AdminController {
@@ -28,6 +32,7 @@ public class AdminController {
     public MFXTextField appointmentHourField;
     public MFXTextField appointmentMinuteField;
     public Label addDateStatusLabel;
+    public Label backupStatusLabel;
 
     @FXML
     public void initialize() {
@@ -57,6 +62,8 @@ public class AdminController {
             appointmentType.saveType();
             addTypeStatusLabel.setText(SAVED_MSG);
             resetAppointmentTypeFields();
+
+            EventsManager.getInstance().fireEvent(FETCH_TYPES_EVENT_ID);
         } catch (SQLException e) {
             addTypeStatusLabel.setText(SAVE_ERROR_MSG);
             e.printStackTrace();
@@ -81,6 +88,8 @@ public class AdminController {
             availableDate.saveDate();
             addDateStatusLabel.setText(SAVED_MSG);
             resetAvailableDateFields();
+
+            EventsManager.getInstance().fireEvent(FETCH_DATES_EVENT_ID);
         } catch (SQLException e) {
             addDateStatusLabel.setText(SAVE_ERROR_MSG);
             e.printStackTrace();
@@ -96,5 +105,22 @@ public class AdminController {
         appointmentDatePicker.setText("");
         appointmentHourField.setText("00");
         appointmentMinuteField.setText("00");
+    }
+
+    public void handleBackup(ActionEvent actionEvent) {
+        try {
+            DBManager.getInstance().connectdb();
+            DBManager.getInstance().backupUsers();
+            DBManager.getInstance().backupDates();
+            DBManager.getInstance().backupTypes();
+            DBManager.getInstance().backupAppointments();
+            DBManager.getInstance().closedb();
+
+            backupStatusLabel.setText(BACKUP_SUCCESS_MSG);
+        }
+        catch (SQLException exception) {
+            backupStatusLabel.setText(BACKUP_ERROR_MSG);
+            exception.printStackTrace();
+        }
     }
 }

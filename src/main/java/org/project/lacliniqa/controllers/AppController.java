@@ -3,12 +3,17 @@ package org.project.lacliniqa.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import org.project.lacliniqa.managers.DBManager;
 import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.User;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.prefs.Preferences;
 
 import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVE_USER_UID;
@@ -22,6 +27,7 @@ public class AppController {
     public Tab logoutTab;
     public Tab appointmentsListTab;
     public Tab adminTab;
+    public Tab paymentTab;
 
     private List<Tab> userLoggedTabs;
     private List<Tab> userNotLoggedTabs;
@@ -106,7 +112,7 @@ public class AppController {
     @FXML
     public void initialize() {
         /* Define user logged in and not logged in tabs */
-        userLoggedTabs = Arrays.asList(appointmentsListTab, setappointmentTab, logoutTab);
+        userLoggedTabs = Arrays.asList(appointmentsListTab, setappointmentTab, paymentTab, logoutTab);
         userNotLoggedTabs = Arrays.asList(loginTab, signupTab);
 
         /* Register app events */

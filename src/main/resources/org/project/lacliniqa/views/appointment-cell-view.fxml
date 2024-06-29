@@ -28,5 +28,6 @@
             </font>
         </Label>
         <MFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleCancel" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #FF0000;" text="Cancel" />
+      <Label fx:id="paidLabel"/>
     </items>
 </ToolBar>

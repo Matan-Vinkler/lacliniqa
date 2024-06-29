@@ -59,6 +59,30 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/virtualizedfx-11.2.6.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+            <systemPath>${project.basedir}/lib/json-20240303.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.46.0.0</version>
+            <systemPath>${project.basedir}/lib/sqlite-jdbc-3.46.0.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+            <systemPath>${project.basedir}/lib/slf4j-api-2.0.13.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.13</version>
+            <systemPath>${project.basedir}/lib/slf4j-nop-2.0.13.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
