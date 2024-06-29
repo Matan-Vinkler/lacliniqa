@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.project.lacliniqa.controllers.SignupController"
+      alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+    <children>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-spacing: 15; -fx-padding: 15;">
+            <children>
+                <MFXTextField fx:id="signupEmailField" layoutX="224.0" layoutY="135.0" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Email"/>
+                <MFXTextField fx:id="signupFnameField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                              prefWidth="170.0" promptText="First Name"/>
+                <MFXTextField fx:id="signupLnameField" layoutX="224.0" layoutY="158.0" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Last Name"/>
+                <MFXTextField fx:id="signupPhoneField" layoutX="224.0" layoutY="204.0" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="Phone Number"/>
+                <MFXTextField fx:id="signupIdField" layoutX="224.0" layoutY="180.0" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="30.0" prefWidth="170.0" promptText="ID"/>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-spacing: 15; -fx-padding: 15;">
+            <children>
+                <MFXPasswordField fx:id="signupPasswordField" minHeight="-Infinity" minWidth="-Infinity"
+                                  prefHeight="30.0" prefWidth="170.0" promptText="Password"/>
+                <MFXPasswordField fx:id="signupRepasswordField" minHeight="-Infinity" minWidth="-Infinity"
+                                  prefHeight="30.0" prefWidth="170.0" promptText="Retype Password"/>
+                <MFXButton alignment="CENTER" onAction="#handleSignupButton" text="Signup"/>
+                <Label fx:id="signupStatusLabel" textFill="#ea0909"/>
+            </children>
+        </VBox>
+    </children>
+</HBox>
