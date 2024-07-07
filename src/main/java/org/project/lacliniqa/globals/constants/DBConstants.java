@@ -23,4 +23,5 @@ public class DBConstants {
 
     public static final String MYSQL_GET_AVAILABLE_DATES_QUERY = "SELECT * FROM `available_dates`";
     public static final String MYSQL_SAVE_AVAILABLE_DATE_QUERY = "INSERT INTO `available_dates` (`did`,`datetime`) VALUES (?,?);";
+    public static final String MYSQL_DELETE_DATE_QUERY = "DELETE FROM `available_dates` WHERE `datetime`=?;";
 }

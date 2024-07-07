@@ -86,7 +86,9 @@ public class SetAppointmentController {
         Appointment appointment = new Appointment(aid, userId, typeId, subtype, date);
         try {
             appointment.saveAppointment();
+            AvailableDate.delete(date);
 
+            EventsManager.getInstance().fireEvent(FETCH_DATES_EVENT_ID);
             EventsManager.getInstance().fireEvent(FETCH_APPOINTMENTS_LIST_EVENT_ID);
             EventsManager.getInstance().fireEvent(GOTO_APPOINTMENTS_EVENT_ID);
         }

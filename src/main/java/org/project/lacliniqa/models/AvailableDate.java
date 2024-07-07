@@ -1,6 +1,7 @@
 package org.project.lacliniqa.models;
 
 import org.project.lacliniqa.managers.DBManager;
+import org.sqlite.core.DB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_GET_AVAILABLE_DATES_QUERY;
-import static org.project.lacliniqa.globals.constants.DBConstants.MYSQL_SAVE_AVAILABLE_DATE_QUERY;
+import static org.project.lacliniqa.globals.constants.DBConstants.*;
 
 public class AvailableDate {
     String did;
@@ -69,5 +69,13 @@ public class AvailableDate {
         DBManager.getInstance().closedb();
 
         return returnArray;
+    }
+
+    public static void delete(String datetime) throws SQLException {
+        List<String> params = Arrays.asList(datetime);
+
+        DBManager.getInstance().connectdb();
+        DBManager.getInstance().executeQuery(MYSQL_DELETE_DATE_QUERY, params);
+        DBManager.getInstance().closedb();
     }
 }

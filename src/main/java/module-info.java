@@ -6,6 +6,7 @@ module org.project.lacliniqa {
     requires java.prefs;
     requires jdk.jsobject;
     requires org.json;
+    requires org.xerial.sqlitejdbc;
 
     exports org.project.lacliniqa;
     opens org.project.lacliniqa to javafx.fxml;
