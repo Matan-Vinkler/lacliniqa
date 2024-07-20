@@ -3,17 +3,12 @@ package org.project.lacliniqa.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import org.project.lacliniqa.managers.DBManager;
 import org.project.lacliniqa.managers.EventsManager;
 import org.project.lacliniqa.models.User;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.prefs.Preferences;
 
 import static org.project.lacliniqa.globals.constants.PrefConstants.PREFS_SAVE_USER_UID;
@@ -28,10 +23,11 @@ public class AppController {
     public Tab appointmentsListTab;
     public Tab adminTab;
     public Tab paymentTab;
+    public Tab usersListTab;
 
     private List<Tab> userLoggedTabs;
     private List<Tab> userNotLoggedTabs;
-
+    private List<Tab> userAdminTabs;
 
     public int handleLoginComplete() {
         /* Display user uid */
@@ -47,11 +43,18 @@ public class AppController {
             tab.setDisable(false);
         }
 
-        /* Enable admin tab if user is admin */
-        adminTab.setDisable(!User.getCurrentUser().isAdmin());
+        /* Enable admin tabs if user is admin */
+        for(Tab tab: userAdminTabs) {
+            tab.setDisable(!User.getCurrentUser().isAdmin());
+        }
 
         /* Fetch appointments list */
         EventsManager.getInstance().fireEvent(FETCH_APPOINTMENTS_LIST_EVENT_ID);
+
+        /* Fetch users list if admin */
+        if(User.getCurrentUser().isAdmin()) {
+            EventsManager.getInstance().fireEvent(FETCH_USERS_LIST_EVENT_ID);
+        }
 
         /* Navigate to home tab */
         appTabPane.getSelectionModel().select(appointmentsListTab);
@@ -77,8 +80,10 @@ public class AppController {
             tab.setDisable(true);
         }
 
-        /* Disable admin tab */
-        adminTab.setDisable(true);
+        /* Disable admin tabs */
+        for(Tab tab: userAdminTabs) {
+            tab.setDisable(true);
+        }
 
         /* Navigate to login tab */
         appTabPane.getSelectionModel().select(loginTab);
@@ -114,6 +119,7 @@ public class AppController {
         /* Define user logged in and not logged in tabs */
         userLoggedTabs = Arrays.asList(appointmentsListTab, setappointmentTab, paymentTab, logoutTab);
         userNotLoggedTabs = Arrays.asList(loginTab, signupTab);
+        userAdminTabs = Arrays.asList(adminTab, usersListTab);
 
         /* Register app events */
         EventsManager.getInstance().registerEvent(LOGIN_CMPLT_EVENT_ID, this::handleLoginComplete);

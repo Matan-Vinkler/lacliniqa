@@ -34,5 +34,8 @@
         <Tab fx:id="adminTab" disable="true" text="Admin">
             <fx:include source="admin-tab-view.fxml" />
         </Tab>
+        <Tab fx:id="usersListTab" disable="true" text="Users List">
+            <fx:include source="users-list-view.fxml" />
+        </Tab>
     </tabs>
 </TabPane>

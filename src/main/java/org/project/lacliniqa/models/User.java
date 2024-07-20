@@ -4,6 +4,7 @@ import org.project.lacliniqa.managers.DBManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -181,5 +182,31 @@ public class User {
         }
 
         return currentUser;
+    }
+
+    public static ArrayList<User> fetchAllUsers() throws SQLException {
+        DBManager.getInstance().connectdb();
+
+        ResultSet set = DBManager.getInstance().executeQueryWithResult(MYSQL_FETCH_ALL_USERS_QUERY);
+
+        ArrayList<User> returnArray = new ArrayList<>();
+
+        while (set.next()) {
+            User user = new User();
+
+            user.setUid(set.getString("uid"));
+            user.setEmail(set.getString("email"));
+            user.setFname(set.getString("fname"));
+            user.setLname(set.getString("lname"));
+            user.setPhone(set.getString("phone"));
+            user.setId(set.getString("id"));
+            user.setAdmin(set.getBoolean("is_admin"));
+
+            returnArray.add(user);
+        }
+
+        DBManager.getInstance().closedb();
+
+        return returnArray;
     }
 }

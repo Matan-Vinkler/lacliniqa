@@ -8,4 +8,5 @@ public class EventConstants {
     public static final int GOTO_APPOINTMENTS_EVENT_ID = 4;
     public static final int FETCH_TYPES_EVENT_ID = 5;
     public static final int FETCH_DATES_EVENT_ID = 6;
+    public static final int FETCH_USERS_LIST_EVENT_ID = 7;
 }

@@ -9,6 +9,7 @@ public class DBConstants {
     public static final String MYSQL_SIGNUP_USER_QUERY = "INSERT INTO `users` (`uid`,`email`,`fname`,`lname`,`phone`,`id`,`password`) VALUES (?,?,?,?,?,?,?);";
     public static final String MYSQL_LOGIN_USER_QUERY = "SELECT * FROM `users` WHERE `email`=? AND `password`=?;";
     public static final String MYSQL_GET_USER_QUERY = "SELECT * FROM `users` WHERE `uid`=?;";
+    public static final String MYSQL_FETCH_ALL_USERS_QUERY = "SELECT * FROM `users`;";
 
     public static final String MYSQL_SAVE_APPOINTMENT_QUERY = "INSERT INTO `appointments`(`aid`,`userId`,`typeId`,`subtype`,`datetime`) VALUES (?,?,?,?,?);";
     public static final String MYSQL_GET_APPOINTMENTS_FROM_UID_QUERY = "SELECT * FROM `appointments` WHERE `userId`=? ORDER BY `datetime` DESC;";
