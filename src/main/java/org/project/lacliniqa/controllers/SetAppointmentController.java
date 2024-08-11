@@ -38,6 +38,7 @@ public class SetAppointmentController {
 
     public int fetchTypes() {
         try {
+            appointmentTypeBox.getItems().clear();
             appointmentTypes = AppointmentType.getTypes();
             for(AppointmentType type: appointmentTypes) {
                 appointmentTypeBox.getItems().add(type.getTypename());
@@ -53,6 +54,7 @@ public class SetAppointmentController {
 
     public int fetchDates() {
         try {
+            appointmentDatetimeBox.getItems().clear();
             availableDates = AvailableDate.getDates();
             for(AvailableDate date: availableDates) {
                 appointmentDatetimeBox.getItems().add(date.getDatetime());
